@@ -52,7 +52,7 @@ class PacketTestCase(unittest.TestCase):
         self.assertEqual(parsed.datetime, None)
         self.assertEqual(parsed.cmd, "U0")
 
-    def test_position_packet(self):
+    def test_invalid_position_packet(self):
         packet = (
             b"*CMDR,OM,863725031194523,000000000000,D0,0,140516.00,V,,,,,,,180121,,,N#"
         )
@@ -73,6 +73,28 @@ class PacketTestCase(unittest.TestCase):
         self.assertEqual(parsed.data.mag_degrees, None)
         self.assertEqual(parsed.data.mag_direction, None)
         self.assertEqual(parsed.data.mode, "invalid")
+
+    def test_position_packet(self):
+        packet = (
+            b"*CMDR,OM,863725031194523,000000000000,D0,0,205719.00,A,4824.07609,N,00959.40370,E,05,2.02,200121,494.6,M,A#"
+        )
+        parsed = self.pparse(packet)
+        self.assertEqual(parsed.devicecode, "OM")
+        self.assertEqual(parsed.imei, "863725031194523")
+        self.assertEqual(parsed.datetime, None)
+        self.assertEqual(parsed.cmd, "position")
+        self.assertEqual(parsed.data.time, b"205719.00")
+        self.assertEqual(parsed.data.status, "active")
+        self.assertEqual(parsed.data.lat, b"4824.07609")
+        self.assertEqual(parsed.data.lat_h, "north")
+        self.assertEqual(parsed.data.lon, b"00959.40370")
+        self.assertEqual(parsed.data.lon_h, "east")
+        self.assertEqual(parsed.data.ground_rate, b"05")
+        self.assertEqual(parsed.data.heading, b"2.02")
+        self.assertEqual(parsed.data.date, b"200121")
+        self.assertEqual(parsed.data.mag_degrees, b"494.6")
+        self.assertEqual(parsed.data.mag_direction, b"M")
+        self.assertEqual(parsed.data.mode, "automatic")
 
 
 class ResponseTestCase(unittest.TestCase):

@@ -158,7 +158,7 @@ class Packet:
         "mag_direction" / MayBeNoneAdapter(CommaTerminated(GreedyBytes)),
         "mode"
         / Enum(
-            GreedyBytes, automatic="A", differential=b"D", estimation=b"E", invalid=b"N"
+            GreedyBytes, automatic=b"A", differential=b"D", estimation=b"E", invalid=b"N"
         ),
     )
 
@@ -184,7 +184,7 @@ class Packet:
             "data"
             / NullTerminated(
                 Switch(
-                    this.cmd,  # noqa: F821
+                    lambda this: this.cmd,
                     {
                         "signin": self.signin,
                         "heartbeat": self.heartbeat,
