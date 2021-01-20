@@ -179,6 +179,7 @@ class Packet:
                 unlock=b"L0",
                 version=b"G0",
                 position=b"D0",
+                update=b"U0",
             ),
             Const(b","),
             "data"
@@ -195,6 +196,7 @@ class Packet:
                         "version": self.version,
                         "position": self.position,
                     },
+                    default=GreedyBytes
                 ),
                 term=b"#",
             ),

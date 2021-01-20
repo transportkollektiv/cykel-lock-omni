@@ -44,13 +44,13 @@ class PacketTestCase(unittest.TestCase):
         self.assertEqual(parsed.data.unlocked_at, b"1497689816")
         self.assertEqual(parsed.data.riding_time, b"20")
 
-    def test_unknown_packet(self):
+    def test_update_packet(self):
         packet = b"*CMDR,OM,863725031194523,000000000000,U0,68,A1,Mar 13 2020#"
         parsed = self.pparse(packet)
         self.assertEqual(parsed.devicecode, "OM")
         self.assertEqual(parsed.imei, "863725031194523")
         self.assertEqual(parsed.datetime, None)
-        self.assertEqual(parsed.cmd, "U0")
+        self.assertEqual(parsed.cmd, "update")
 
     def test_invalid_position_packet(self):
         packet = (
