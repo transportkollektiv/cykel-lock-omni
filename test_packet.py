@@ -1,14 +1,16 @@
-import unittest
-import binascii
+# import binascii
 import datetime
+import unittest
+
 from packet import Packet, Response
+
 
 class PacketTestCase(unittest.TestCase):
     def pparse(self, packet, instance=None):
         pp = instance or Packet()
         parsed = pp.parse(packet)
-        #print(binascii.hexlify(packet))
-        #print(parsed)
+        # print(binascii.hexlify(packet))
+        # print(parsed)
         return parsed
 
     def test_signin_packet(self):
@@ -51,7 +53,9 @@ class PacketTestCase(unittest.TestCase):
         self.assertEqual(parsed.cmd, "U0")
 
     def test_position_packet(self):
-        packet = b"*CMDR,OM,863725031194523,000000000000,D0,0,140516.00,V,,,,,,,180121,,,N#"
+        packet = (
+            b"*CMDR,OM,863725031194523,000000000000,D0,0,140516.00,V,,,,,,,180121,,,N#"
+        )
         parsed = self.pparse(packet)
         self.assertEqual(parsed.devicecode, "OM")
         self.assertEqual(parsed.imei, "863725031194523")
@@ -72,8 +76,16 @@ class PacketTestCase(unittest.TestCase):
 
 
 class ResponseTestCase(unittest.TestCase):
-
     def test_lock_response_packet(self):
         pp = Response()
-        packet = pp.build(dict(devicecode="OM", imei="863725031194523", datetime=datetime.datetime(2016, 12, 1, 15, 0), data="L1"))
-        self.assertEqual(packet, b'\xff\xff*CMDS,OM,863725031194523,161201150000,Re,L1#')
+        packet = pp.build(
+            dict(
+                devicecode="OM",
+                imei="863725031194523",
+                datetime=datetime.datetime(2016, 12, 1, 15, 0),
+                data="L1",
+            )
+        )
+        self.assertEqual(
+            packet, b"\xff\xff*CMDS,OM,863725031194523,161201150000,Re,L1#"
+        )
