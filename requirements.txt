@@ -1,0 +1,8 @@
+construct==2.10.56
+crccheck==0.6
+twisted==20.3.0
+requests[security]==2.25.1
+service_identity==18.1.0
+jsons==1.3.0
+klein==19.6.0
+prometheus_client==0.8.0
